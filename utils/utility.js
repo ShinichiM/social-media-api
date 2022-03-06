@@ -3,4 +3,7 @@ function validateEmail(string) {
   return re.test(email);
 }
 
-module.exports = { validateEmail };
+function formatDateTime() {
+
+};
+module.exports = { validateEmail, formatDateTime };
