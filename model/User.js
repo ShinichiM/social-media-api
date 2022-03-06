@@ -1,22 +1,22 @@
-const { Schema, model, Type } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const { validateEmail } = require('../utils/utility');
 
 const userSchema = new Schema({
     username: {
         type: String,
         unique: true,
-        required: 'Username is required',
+        required: true,
         trim: true
     },
     email: {
         type: String,
-        required: 'Email Address is required',
+        required: true,
         unique: true,
-        validate: [validateEmail, 'Please enter a valid email address'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+/, 'Please fill a valid email address'] 
+        // validate: [validateEmail, 'Please enter a valid email address'],
+        // match: [RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+/), 'Please fill a valid email address'] 
     },
-    thoughts: [{ _id: Schema.Types.ObjectId, ref: 'Thoughts'}],
-    friends: [{ _id: Schema.Types.ObjectId, ref: 'User'}]
+    thoughts: [{ type: Schema.Types.ObjectId, ref: 'Thought'}],
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User'}]
 }, {
     toJSON: {
         getters: true,
