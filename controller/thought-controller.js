@@ -45,12 +45,32 @@ const thoughtController = {
             .catch(err => res.json(err))
     },
     deleteThought({ params }, res) {
-        Thought.findOneAndDelete({ _id: params.thoughtId})
+        Thought.findOneAndDelete({ _id: params.thoughtId })
             .then(thought => {
                 if (!thought) {
                     res.status(404).json({ message: 'No thought with that ID'})
                 }
                 res.json(thought);
+            })
+            .catch(err => res.json(err));
+    },
+    addReaction({ params, body }, res) {
+        Thought.findOneAndUpdate({ _id: params.thoughtId}, { $push: { reactions: body }}, { new: true })
+            .then(thoughtData => {
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No thought with that ID'})
+                }
+                res.json(thoughtData);
+            })
+            .catch(err => res.json(err));
+    },
+    deleteReaction({ params }, res) {
+        Thought.findOneAndUpdate({ _id: params.thoughtId }, { $pull: { reactions: { reactionId: params.reactionId} } }, { new: true })
+            .then(thoughtData => {
+                if (!thoughtData) {
+                    res.status(404).json({ message: 'No Thought or Reaction with that ID'});
+                }
+                res.json(thoughtData);
             })
             .catch(err => res.json(err));
     }
